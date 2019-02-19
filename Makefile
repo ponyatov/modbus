@@ -1,11 +1,12 @@
 MODULE = $(notdir $(CURDIR))
 
-$(MODULE).log: ./$(MODULE)
-	./$(MODULE) > $@ && tail $(TAIL) $@
+all: ./$(MODULE)
+	LD_LIBRARY_PATH=/usr/local/lib ./$(MODULE)
 
 C = $(MODULE).cpp
 H = $(MODULE).hpp
 
-./$(MODULE): $(C) $(H)
-	$(CXX) $(CXXFLAGS) -o $@ $(C)
+L += -lmodbus
 
+./$(MODULE): $(C) $(H) Makefile
+	$(CXX) $(CXXFLAGS) -o $@ $(C) $(L)
